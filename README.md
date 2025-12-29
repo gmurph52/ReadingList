@@ -3,5 +3,5 @@ This is in the start of a Go web server. I will be expanding this and adding a f
 
 ## Project setup
 ```
- run ./cmd/api/
+ go run ./cmd/api/
 ```
