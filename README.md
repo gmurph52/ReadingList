@@ -10,7 +10,19 @@ Then set an environment varialbe name `READINGLIST_DB_DSN` with the DB connectio
  e.g. `export READINGLIST_DB_DSN='postgres://readinglist:[your-password]@localhost/readinglist?sslmode=disable'`
 
 
-### Start the app
+### Web Service 
+A web service written in Go
+
+## Start the app
 ```
  go run ./cmd/api/
 ```
+
+### Web App
+A web app written in Go
+
+## Start the app
+```
+ go run ./cmd/web/
+```
+
