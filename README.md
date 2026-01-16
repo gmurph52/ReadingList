@@ -1,5 +1,6 @@
 # ReadingList
-This is in the start of a Go web service. I will be expanding this and adding a full API with a database and then a Web app.
+A Go webservice used for creating and updating a reading list.
+This is a full Go web service with a postgreSQL database and a Go web app. The web app is still in progress.
 
 ## Project setup
 
