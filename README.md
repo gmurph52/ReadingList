@@ -21,26 +21,56 @@ docker start reading-list-db-container
 
 docker ps // verify postgres is running
 docker exec -it reading-list-db-container psql -h localhost -p 5432 -U postgres // connect to DB
-
 ```
 
-  TODO: create a migration/script to set up correct schema.
-Then set an environment varialbe name `READINGLIST_DB_DSN` with the DB connection string.
- e.g. `export READINGLIST_DB_DSN='postgres://readinglist:[your-password]@localhost/readinglist?sslmode=disable'`
+After connecting to the DB, the first time you will need to set up the schema. Run the following:
+```
+CREATE ROLE readinglist WITH LOGIN PASSWORD '[role password]';
+```
+```
+SELECT rolname FROM pg_roles;
+```
+```
+\c readinglist
+```
+```
+CREATE TABLE IF NOT EXISTS books (
+  id bigserial PRIMARY KEY,
+  created_at timestamp(0) with time zone NOT NULL DEFAULT NOW(),
+  title text NOT NULL,
+  published integer NOT NULL,
+  pages integer NOT NULL,
+  geners text[] NOT NULL,
+  ratings real NOT NULL,
+  version integer NOT NULL DEFAULT 1
+);
+```
+```
+GRANT SELECT, INSERT, UPDATE, DELETE ON books TO readinglist;
+```
+```
+GRANT USAGE, SELECT ON SEQUENCE books_id_seq TO readinglist;
+```
 
+TODO: create a migration/script to set up correct schema and roles automatically.
 
-### Web Service 
+Then set an environment varialbe name `READINGLIST_DB_DSN` with the DB connection string:
+```
+export READINGLIST_DB_DSN='postgres://readinglist:[role password]@localhost/readinglist?sslmode=disable'
+```
+
+## Web Service 
 A web service written in Go
 
-## Start the app
+### Start the app
 ```
  go run ./cmd/api/
 ```
 
-### Web App
+## Web App
 A web app written in Go
 
-## Start the app
+### Start the app
 ```
  go run ./cmd/web/
 ```
