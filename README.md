@@ -40,8 +40,8 @@ CREATE TABLE IF NOT EXISTS books (
   title text NOT NULL,
   published integer NOT NULL,
   pages integer NOT NULL,
-  geners text[] NOT NULL,
-  ratings real NOT NULL,
+  genres text[] NOT NULL,
+  rating real NOT NULL,
   version integer NOT NULL DEFAULT 1
 );
 ```
