@@ -16,6 +16,7 @@ docker images | grep postgres // verify the image is there
 docker run --name reading-list-db-container -e POSTGRES_PASSWORD=[password] -d -p 5432:5432 postgres // create container, env var for password, expose port, and use postgres image
 or 
 docker run -d --name reading-list-db-container -e POSTGRES_DB=readinglist -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=password -v pgdata:/var/lib/postgresql -p 5432:5432 postgres // create container, env var for password, expose port, and use postgres image, and persist database
+
 // after first time
 docker start reading-list-db-container
 
@@ -40,8 +41,8 @@ CREATE TABLE IF NOT EXISTS books (
   title text NOT NULL,
   published integer NOT NULL,
   pages integer NOT NULL,
-  geners text[] NOT NULL,
-  ratings real NOT NULL,
+  genres text[] NOT NULL,
+  rating real NOT NULL,
   version integer NOT NULL DEFAULT 1
 );
 ```
@@ -54,7 +55,7 @@ GRANT USAGE, SELECT ON SEQUENCE books_id_seq TO readinglist;
 
 TODO: create a migration/script to set up correct schema and roles automatically.
 
-Then set an environment varialbe name `READINGLIST_DB_DSN` with the DB connection string:
+Then set an environment variable name `READINGLIST_DB_DSN` with the DB connection string:
 ```
 export READINGLIST_DB_DSN='postgres://readinglist:[role password]@localhost/readinglist?sslmode=disable'
 ```
@@ -65,6 +66,10 @@ A web service written in Go
 ### Start the app
 ```
  go run ./cmd/api/
+```
+or
+```
+go run ./cmd/api/ -db-dsn "postgres://[username:password]@localhost:5432/postgres?sslmode=disable" // do this if the setting an environment variable isn't working
 ```
 
 ## Web App
